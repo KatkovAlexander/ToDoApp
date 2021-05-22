@@ -2,53 +2,63 @@ import SwiftUI
 
 struct ListRowView: View {
     
-    let item : ItemModel
+    @State var item : ItemModel
+    let dateFormatter = DateFormatter()
     
     var body: some View {
         HStack {
             Image(systemName: item.isComplited ? "checkmark.circle.fill" : "circle")
                 .foregroundColor(Color.accentColor)
-                .font(.title2)
+                .font(.title)
+                .onTapGesture {
+                    withAnimation(.linear){
+                        item.Compeletion()
+                    }
+                }
             VStack (alignment: .leading, spacing: 8){
                 Text(item.title)
-                    .font(.title2)
+                    .font(.title3)
                 Text(item.text)
                     .font(.headline)
                     .lineLimit(1)
                     .foregroundColor(Color(UIColor.secondaryLabel
                     ))
-                HStack(spacing: 2){
+                HStack(spacing: 0){
                     HStack{
                         Image(systemName: "calendar")
-                            .foregroundColor(Color.accentColor)
-                        Text(item.dateToDo)
+                            .foregroundColor(Color(#colorLiteral(red: 0.8321695924, green: 0.985483706, blue: 0.4733308554, alpha: 1)))
+                        Text(convertDateFormat(inputDate: item.dateToDo))
                     }
-                        
+                    
                     Spacer()
                     
                     HStack{
                         Image(systemName: "flag.fill")
-                            .foregroundColor(Color.accentColor)
-                        Text(item.deadline)
+                            .foregroundColor(Color(#colorLiteral(red: 1, green: 0.4932718873, blue: 0.4739984274, alpha: 1)))
+                        Text(convertDateFormat(inputDate: item.deadline))
                     }
                 }
-                .font(.headline)
+                .font(.subheadline)
             }
-//            Spacer()
-                
-            
             
         }
         .font(.title2)
         .padding(.vertical, 8)
     }
     
-    func correctDateOutPut(item : String) -> Date {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy MM dd"
-        
-        return dateFormatter.date(from: item)!
+    func convertDateFormat(inputDate: String) -> String {
+
+         let olDateFormatter = DateFormatter()
+         olDateFormatter.dateFormat = "yyyy-MM-dd"
+
+         let oldDate = olDateFormatter.date(from: inputDate)
+
+         let convertDateFormatter = DateFormatter()
+         convertDateFormatter.dateFormat = "MMM dd yyyy"
+
+         return convertDateFormatter.string(from: oldDate!)
     }
+    
 }
 
 struct ListRowView_Previews: PreviewProvider {

@@ -28,4 +28,8 @@ struct ItemModel: Identifiable, Codable {
         return ItemModel(id: id, title: title, text: text, dateToDo: dateToDo, deadline: deadline, isComplited: !isComplited)
     }
     
+    mutating func Compeletion() {
+        self.isComplited.toggle()
+    }
+    
 }

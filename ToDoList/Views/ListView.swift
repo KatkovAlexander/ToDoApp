@@ -12,6 +12,7 @@ struct ListView: View {
     @EnvironmentObject var listViewModel: ListViewModel
     @State var selection: Int? = nil
     
+    
     var body: some View {
         ZStack {
             if listViewModel.items.isEmpty {
@@ -24,19 +25,15 @@ struct ListView: View {
                             destination: OpenView(item: item),
                             label: {
                                 ListRowView(item: item)
-                                    .onTapGesture {
-                                        withAnimation(.linear){
-                                            listViewModel.updateItem(item: item)
-                                        }
-                                    }
-                                })
                                 
+                            })
+                        
                     }
                     .onDelete(perform: listViewModel.deleteItem)
                     .onMove(perform: listViewModel.moveItem)
                 }
                 .listStyle(InsetGroupedListStyle())
-
+                
                 VStack{
                     Spacer()
                     HStack{
@@ -54,20 +51,20 @@ struct ListView: View {
                                     .font(.system(.largeTitle))
                                     .foregroundColor(Color.white)
                                     .padding()
-                                    
+                                
                             })
-                                .background(Color.accentColor)
-                                .cornerRadius(38.5)
-                                .padding()
-                                .shadow(color: Color.black.opacity(0.3),
-                                        radius: 3,
-                                        x: 3,
-                                        y: 3
-                                )
+                            .background(Color.accentColor)
+                            .cornerRadius(38.5)
+                            .padding()
+                            .shadow(color: Color.black.opacity(0.3),
+                                    radius: 3,
+                                    x: 3,
+                                    y: 3
+                            )
                         }
                         
                     }
-                        
+                    
                 }
             }
             
