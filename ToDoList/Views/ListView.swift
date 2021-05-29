@@ -20,7 +20,7 @@ struct ListView: View {
             }
             else {
                 List {
-                    ForEach(listViewModel.items) { item in
+                    ForEach(listViewModel.items.reversed()) { item in
                         NavigationLink(
                             destination: OpenView(item: item),
                             label: {
