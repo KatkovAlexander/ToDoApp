@@ -60,7 +60,7 @@ struct AddView: View {
                 HStack(spacing: 30){
                     HStack{
                         Image(systemName: "calendar")
-                            .foregroundColor(Color(#colorLiteral(red: 0.8321695924, green: 0.985483706, blue: 0.4733308554, alpha: 1)))
+                            .foregroundColor(Color(#colorLiteral(red: 0, green: 0.5603182912, blue: 0, alpha: 1)))
                         
                         DatePicker("", selection: $dateToDo, in: Date()..., displayedComponents: .date)
                     }
