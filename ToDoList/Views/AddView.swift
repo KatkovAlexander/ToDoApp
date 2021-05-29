@@ -12,8 +12,8 @@ struct AddView: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var listViewModel : ListViewModel
     
-    @State var titleFieldText : String = ""
-    @State var textTextEditor : String = ""
+    @State var title : String = ""
+    @State var text : String = ""
     @State var dateToDo = Date()
     @State var dedline = Date()
     
@@ -28,14 +28,31 @@ struct AddView: View {
     var body: some View {
         ScrollView{
             VStack (spacing: 14) {
-                TextField("ToDo Title", text: $titleFieldText)
-                    .padding(.horizontal)
-                    .frame(height: 55)
-                    .background(Color(UIColor.secondarySystemBackground))
-                    .cornerRadius(10)
+                ZStack {
+                    if title.isEmpty{
+                        HStack{
+                            Text("ToDo Title")
+                                .font(.system(size: 17))
+                                .foregroundColor(Color(UIColor.placeholderText))
+                                
+
+                            Spacer()
+                        }
+                        .padding(.leading, 17)
+                    }
+                        
+                    TextEditor(text: $title)
+                        .padding(.leading, 11)
+                        .padding(.trailing, 11)
+                        .padding(.top, 8)
+                        .padding(.bottom, 8)
+                        
+                }
+                .background(Color(UIColor.secondarySystemBackground))
+                .cornerRadius(10)
                 
                 ZStack {
-                    if textTextEditor.isEmpty{
+                    if text.isEmpty{
                         HStack{
                             Text("ToDo Text")
                                 .font(.system(size: 17))
@@ -47,7 +64,7 @@ struct AddView: View {
                         .padding(.leading, 17)
                     }
                         
-                    TextEditor(text: $textTextEditor)
+                    TextEditor(text: $text)
                         .padding(.leading, 11)
                         .padding(.trailing, 11)
                         .padding(.top, 8)
@@ -95,7 +112,7 @@ struct AddView: View {
                     .padding()
             })
         }
-        .navigationTitle("Add an Item")
+        .navigationTitle("Add an ToDo")
         .alert(isPresented: $showAlert, content: getAlert)
     }
     
@@ -105,14 +122,14 @@ struct AddView: View {
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy MM dd"
             
-            listViewModel.addItem(title: titleFieldText, text: textTextEditor, dateToDo: dateFormatter.string(from: dateToDo), deadline: dateFormatter.string(from: dedline))
+            listViewModel.addItem(title: title, text: text, dateToDo: dateFormatter.string(from: dateToDo), deadline: dateFormatter.string(from: dedline))
             presentationMode.wrappedValue.dismiss()
 
         }
     }
     
     func textIsAppropriate() -> Bool {
-        if (titleFieldText.count < 3){
+        if (title.count < 3){
             alertTitle = "note length must be more than 3 characters"
             showAlert.toggle()
             return false

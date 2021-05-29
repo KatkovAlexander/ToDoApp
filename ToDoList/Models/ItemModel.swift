@@ -9,8 +9,8 @@ import Foundation
 
 struct ItemModel: Identifiable, Codable {
     let id: String
-    let title: String
-    let text : String
+    var title: String
+    var text : String
     let dateToDo : String
     let deadline : String
     var isComplited: Bool
