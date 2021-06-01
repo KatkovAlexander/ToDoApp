@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ListRowView: View {
     
+    @EnvironmentObject var listViewModel: ListViewModel
     @State var item : ItemModel
     let dateFormatter = DateFormatter()
     
@@ -13,6 +14,7 @@ struct ListRowView: View {
                 .onTapGesture {
                     withAnimation(.linear){
                         item.Compeletion()
+                        listViewModel.updateItem(item: item)
                     }
                 }
             VStack (alignment: .leading, spacing: 8){
@@ -63,7 +65,7 @@ struct ListRowView: View {
 
 struct ListRowView_Previews: PreviewProvider {
     
-    static var item1 = ItemModel(title: "1", text: "1423423545645654645645654654645645456", dateToDo: "122", deadline: "122", isComplited: false)
+    static var item1 = ItemModel(title: "1", text: "1423423545645654645645654654645645456", dateToDo: "122", deadline: "122", isComplited: false, category: "111")
     
     static var previews: some View {
         ListRowView(item: item1)

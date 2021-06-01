@@ -15,10 +15,18 @@ class ListViewModel : ObservableObject {
         }
     }
     
+    var categories : [CategoryModel] = []  {
+        didSet {
+            saveCategories()
+        }
+    }
+    
     let itemsKey : String = "items_list"
+    let categoriesKey : String = "groups_list"
     
     init() {
         getItems()
+        getCategories()
     }
     
     func getItems(){
@@ -28,6 +36,15 @@ class ListViewModel : ObservableObject {
         else { return }
         
         self.items = savedItems
+    }
+    
+    func getCategories(){
+        guard
+            let data = UserDefaults.standard.data(forKey: categoriesKey),
+            let savedCategories = try? JSONDecoder().decode([CategoryModel].self, from: data)
+        else { return }
+        
+        self.categories = savedCategories
     }
     
     func deleteItem(indexSet: IndexSet) {
@@ -44,9 +61,14 @@ class ListViewModel : ObservableObject {
         items.move(fromOffsets: from, toOffset: to)
     }
     
-    func addItem(title: String, text : String, dateToDo : String, deadline: String) {
-        let newItem = ItemModel(title: title, text: text, dateToDo: dateToDo, deadline: deadline, isComplited: false)
+    func addItem(title: String, text : String, dateToDo : String, deadline: String, category: String) {
+        let newItem = ItemModel(title: title, text: text, dateToDo: dateToDo, deadline: deadline, isComplited: false, category: category)
         items.append(newItem)
+    }
+    
+    func addCategory(title : String){
+        let newCategory = CategoryModel(title: title)
+        categories.append(newCategory)
     }
     
     func updateItem(item: ItemModel) {
@@ -56,8 +78,23 @@ class ListViewModel : ObservableObject {
     }
     
     func saveItems() {
-        if let encodedeData = try? JSONEncoder().encode(items) {
-            UserDefaults.standard.set(encodedeData, forKey: itemsKey)
+        if let encodededData = try? JSONEncoder().encode(items) {
+            UserDefaults.standard.set(encodededData, forKey: itemsKey)
         }
+    }
+    
+    func saveCategories() {
+        if let encodededData = try? JSONEncoder().encode(categories) {
+            UserDefaults.standard.set(encodededData, forKey: categoriesKey)
+        }
+    }
+    
+    func allCategories() -> Array<String> {
+        var arr : [String] = []
+        for category in categories {
+            arr.append(category.title)
+        }
+        
+        return arr
     }
 }

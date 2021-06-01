@@ -12,27 +12,44 @@ struct ListView: View {
     @EnvironmentObject var listViewModel: ListViewModel
     @State var selection: Int? = nil
     
+    var categories : [String] = ["All"]
+    @State private var selectedCategory = 0
     
     var body: some View {
+
         ZStack {
+            Color(UIColor.secondarySystemBackground)
+                .ignoresSafeArea()
+            
             if listViewModel.items.isEmpty {
                 NoItemView()
             }
             else {
-                List {
-                    ForEach(listViewModel.items.reversed()) { item in
-                        NavigationLink(
-                            destination: OpenView(item: item),
-                            label: {
-                                ListRowView(item: item)
-                                
-                            })
-                        
+                Form {
+                    Section{
+                        Picker(selection: $selectedCategory, label: Text("Picked group:")) {
+                            ForEach(0 ..< makingCategories().count, id: \.self) { category in
+                                Text(makingCategories()[category])
+                            }
+                        }
                     }
-                    .onDelete(perform: listViewModel.deleteItem)
-                    .onMove(perform: listViewModel.moveItem)
+                    
+                    Section{
+                        ForEach(listViewModel.items) { item in
+                            if cheackItem(item: item){
+                                NavigationLink(
+                                    destination: OpenView(item: item),
+                                    label: {
+                                        ListRowView(item: item)
+                                        
+                                    })
+                            }
+                        }
+                        .onDelete(perform: listViewModel.deleteItem)
+                        .onMove(perform: listViewModel.moveItem)
+                    }
                 }
-                .listStyle(InsetGroupedListStyle())
+                
                 
                 VStack{
                     Spacer()
@@ -75,10 +92,28 @@ struct ListView: View {
         .navigationBarItems(
             trailing: EditButton()
         )
+    
         
         
     }
+    func makingCategories() -> Array<String>{
+        return ["All"] + listViewModel.allCategories() + ["Complited"]
+    }
     
+    func cheackItem(item: ItemModel) -> Bool {
+        
+        if makingCategories()[selectedCategory] == "All" && item.isComplited == false {
+            return true
+        }
+        else if makingCategories()[selectedCategory] == "Complited" && item.isComplited == true {
+            return true
+        }
+        else if item.category == makingCategories()[selectedCategory] && item.isComplited == false {
+            return true
+        }
+
+        return false
+    }
 }
 
 struct ListView_Previews: PreviewProvider {
