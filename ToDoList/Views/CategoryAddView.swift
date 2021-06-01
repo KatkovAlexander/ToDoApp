@@ -23,7 +23,7 @@ struct CategoryAddView: View {
                 ZStack {
                     if title.isEmpty{
                         HStack{
-                            Text("ToDo Title")
+                            Text("Category name")
                                 .font(.system(size: 17))
                                 .foregroundColor(Color(UIColor.placeholderText))
                             
