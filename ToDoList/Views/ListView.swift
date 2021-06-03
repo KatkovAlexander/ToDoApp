@@ -92,6 +92,18 @@ struct ListView: View {
         .navigationBarItems(
             trailing: EditButton()
         )
+        .toolbar(content: {
+            ToolbarItem(placement: .navigationBarLeading){
+                Button(action: {
+                    UserDefaults.standard.set(false, forKey: "status")
+                    NotificationCenter.default.post(name: NSNotification.Name("statusChange"), object: nil)
+                    
+                }) {
+                    
+                    Text("LogOut")
+                }
+            }
+        })
     
         
         
@@ -114,6 +126,7 @@ struct ListView: View {
 
         return false
     }
+    
 }
 
 struct ListView_Previews: PreviewProvider {
