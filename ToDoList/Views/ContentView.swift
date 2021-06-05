@@ -24,6 +24,7 @@ struct ContentView: View {
             }
             else {
                 SignInView()
+                    .environmentObject(listViewModel)
             }
         }
         .animation(.spring())

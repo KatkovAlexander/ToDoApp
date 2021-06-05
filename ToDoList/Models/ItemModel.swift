@@ -11,8 +11,8 @@ struct ItemModel: Identifiable, Codable {
     let id: String
     var title: String
     var text : String
-    let dateToDo : String
-    let deadline : String
+    var dateToDo : String
+    var deadline : String
     var isComplited: Bool
     var category : String
     

@@ -10,6 +10,8 @@ import Firebase
 import FirebaseAuth
 
 struct SignInView: View {
+    @EnvironmentObject var listViewModel: ListViewModel
+    
     @State var user = ""
     @State var pass = ""
     @State var message = ""
@@ -63,7 +65,8 @@ struct SignInView: View {
                             NotificationCenter.default.post(name: NSNotification.Name("statusChange"), object: nil)
                         }
                     }
-                    
+                    listViewModel.getItemsFromDb()
+                    listViewModel.getCategoriesFromDb()
                 }) {
                     
                     Text("Sign In").foregroundColor(.white).frame(width: UIScreen.main.bounds.width - 120).padding()

@@ -11,6 +11,7 @@ struct ListView: View {
     
     @EnvironmentObject var listViewModel: ListViewModel
     @State var selection: Int? = nil
+    @State var settings: Int? = nil
     
     var categories : [String] = ["All"]
     @State private var selectedCategory = 0
@@ -90,17 +91,22 @@ struct ListView: View {
         .listStyle(PlainListStyle())
         .navigationTitle("ToDo List")
         .navigationBarItems(
-            trailing: EditButton()
+            leading: EditButton()
         )
         .toolbar(content: {
-            ToolbarItem(placement: .navigationBarLeading){
-                Button(action: {
-                    UserDefaults.standard.set(false, forKey: "status")
-                    NotificationCenter.default.post(name: NSNotification.Name("statusChange"), object: nil)
+            ToolbarItem(placement: .navigationBarTrailing){
+                NavigationLink(
+                    destination: SettingsView(),
+                    tag: 1,
+                    selection: $settings)
+                {
+                    Button(action: {
+                        self.settings = 1
+                        
+                    }, label: {
+                        Image(systemName: "gearshape.2.fill")
+                    })
                     
-                }) {
-                    
-                    Text("LogOut")
                 }
             }
         })
