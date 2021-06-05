@@ -9,6 +9,7 @@ import SwiftUI
 
 struct EditCategoriesView: View {
     @EnvironmentObject var listViewModel: ListViewModel
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         Form{
@@ -19,7 +20,7 @@ struct EditCategoriesView: View {
                 }
                 .listRowInsets(.init())
                 .frame(height: 50)
-                .background(Color(UIColor.secondarySystemBackground))
+                .background(Color(colorScheme == .dark ? UIColor.systemBackground : UIColor.secondarySystemBackground))
                     
             }
             
