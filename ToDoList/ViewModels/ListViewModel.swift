@@ -32,7 +32,9 @@ class ListViewModel : ObservableObject {
     }
     
     func getItemsFromDb() {
-        print(user ?? "")
+        
+        updateUser()
+        
         database.child("\(String(describing: user))").child("items").observeSingleEvent(of: .value, with: { snapshot in
             guard
                 let db = snapshot.value as? [String: Any]
@@ -89,6 +91,9 @@ class ListViewModel : ObservableObject {
     }
     
     func getCategoriesFromDb(){
+        
+        updateUser()
+        
         database.child("\(String(describing: user))").child("categories").observeSingleEvent(of: .value, with: { snapshot in
             guard
                 let db = snapshot.value as? [String: Any]
@@ -121,6 +126,8 @@ class ListViewModel : ObservableObject {
     }
     
     func deleteCategory(indexSet: IndexSet) {
+        updateUser()
+        
         let item = indexSet.map{self.categories[$0].id}
         database.child("\(String(describing: user))").child("categories").child(item[0]).removeValue()
         
@@ -128,6 +135,8 @@ class ListViewModel : ObservableObject {
     }
     
     func deleteItem(indexSet: IndexSet) {
+        updateUser()
+        
         let item = indexSet.map{self.items[$0].id}
         database.child("\(String(describing: user))").child("items").child(item[0]).removeValue()
         
@@ -135,6 +144,8 @@ class ListViewModel : ObservableObject {
     }
     
     func deleteItem(item: ItemModel){
+        updateUser()
+        
         if let index = items.firstIndex (where: {$0.id == item.id}) {
             database.child("\(String(describing: user))").child("items").child(item.id).removeValue()
             items.remove(at: index)
@@ -162,6 +173,8 @@ class ListViewModel : ObservableObject {
     }
     
     func addItemToDb() {
+        updateUser()
+        
         if (user != nil) {
             
             for item in items {
@@ -186,6 +199,8 @@ class ListViewModel : ObservableObject {
     }
     
     func addCategoriesToDb() {
+        updateUser()
+        
         if (user != nil) {
             
             for category in categories {
@@ -227,7 +242,7 @@ class ListViewModel : ObservableObject {
                 categories.remove(at: index)
             }
         }
-        
+
     }
     
     func updateUser() {

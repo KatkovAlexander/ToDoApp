@@ -71,7 +71,7 @@ struct SignUpView: View {
                         self.show.toggle()
                         
                         NotificationCenter.default.post(name: NSNotification.Name("statusChange"), object: nil)
-                        listViewModel.updateUser()
+//                        listViewModel.updateUser()
                     }
                 }
                 

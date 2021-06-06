@@ -64,10 +64,12 @@ struct SignInView: View {
                             UserDefaults.standard.set(true, forKey: "status")
                             NotificationCenter.default.post(name: NSNotification.Name("statusChange"), object: nil)
                         }
+                        listViewModel.getItemsFromDb()
+                        listViewModel.getCategoriesFromDb()
                     }
-                    listViewModel.getItemsFromDb()
-                    listViewModel.getCategoriesFromDb()
-                    listViewModel.updateUser()
+                    
+                    
+                    
                 }) {
                     
                     Text("Sign In").foregroundColor(.white).frame(width: UIScreen.main.bounds.width - 120).padding()
@@ -117,7 +119,9 @@ func signInWithEmail(email: String,password : String,completion: @escaping (Bool
         }
         
         completion(true,(res?.user.email)!)
+        
     }
+    
 }
 
 struct SignInView_Previews: PreviewProvider {
