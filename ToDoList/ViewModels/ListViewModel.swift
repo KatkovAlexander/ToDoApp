@@ -15,7 +15,7 @@ class ListViewModel : ObservableObject {
         }
     }
     
-    var categories : [CategoryModel] = []  {
+    @Published var categories : [CategoryModel] = []  {
         didSet {
             saveCategories()
         }
@@ -126,16 +126,16 @@ class ListViewModel : ObservableObject {
     }
     
     func deleteCategory(indexSet: IndexSet) {
-        updateUser()
         
+        print("было в массиве", categories.count)
         let item = indexSet.map{self.categories[$0].id}
         database.child("\(String(describing: user))").child("categories").child(item[0]).removeValue()
         
         categories.remove(atOffsets: indexSet)
+        print("стало в массиве", categories.count)
     }
     
     func deleteItem(indexSet: IndexSet) {
-        updateUser()
         
         let item = indexSet.map{self.items[$0].id}
         database.child("\(String(describing: user))").child("items").child(item[0]).removeValue()
@@ -144,12 +144,15 @@ class ListViewModel : ObservableObject {
     }
     
     func deleteItem(item: ItemModel){
-        updateUser()
-        
+    
         if let index = items.firstIndex (where: {$0.id == item.id}) {
             database.child("\(String(describing: user))").child("items").child(item.id).removeValue()
             items.remove(at: index)
         }
+    }
+    
+    func moveCategory(from: IndexSet, to: Int) {
+        categories.move(fromOffsets: from, toOffset: to)
     }
     
     func moveItem(from: IndexSet, to: Int) {
@@ -173,7 +176,6 @@ class ListViewModel : ObservableObject {
     }
     
     func addItemToDb() {
-        updateUser()
         
         if (user != nil) {
             
@@ -199,7 +201,6 @@ class ListViewModel : ObservableObject {
     }
     
     func addCategoriesToDb() {
-        updateUser()
         
         if (user != nil) {
             
@@ -217,6 +218,13 @@ class ListViewModel : ObservableObject {
         if let encodededData = try? JSONEncoder().encode(categories) {
             UserDefaults.standard.set(encodededData, forKey: categoriesKey)
         }
+        guard
+            let data = UserDefaults.standard.data(forKey: categoriesKey),
+            let savedCategories = try? JSONDecoder().decode([CategoryModel].self, from: data)
+        else { return }
+        
+        print("стало в локальной бд", savedCategories.count)
+        
         addCategoriesToDb()
     }
     

@@ -13,42 +13,87 @@ struct SettingsView: View {
     @EnvironmentObject var listViewModel: ListViewModel
     @State var editCategories: Int? = nil
     
+    @Environment(\.colorScheme) var colorScheme
+    
+    @Binding var settings : Bool
+    @State var selection: Bool = false
+    
     var body: some View {
         Form {
-            Section {
-                NavigationLink(
-                    destination: EditCategoriesView(),
-                    tag: 1,
-                    selection: $editCategories)
-                {
-                
-                        Text("Delete Categories")
+            if !selection {
+                Section {
+                    
+                    
+                    Button(action: {
+                        self.selection.toggle()
+                    }, label: {
+                        Text("Delete categories")
+                    })
+                    
                     
                     
                 }
+                
+                Section {
+                    Button(action: logOut) {
+                        HStack {
+                            Spacer()
+                            Text("Log Out")
+                                .font(.headline)
+                                .foregroundColor(.white)
+                            Spacer()
+                        }
+                    }
+                    .listRowInsets(.init())
+                    .frame(height: 50)
+                    .background(Color.red)
+                    .cornerRadius(5)
+                }
             }
-            
-            Section {
-                Button(action: logOut) {
-                    HStack {
-                        Spacer()
-                        Text("Log Out")
-                            .font(.headline)
-                            .foregroundColor(.white)
+            else {
+                Section{
+                    HStack{
+                        Text("Swipe left to delete")
                         Spacer()
                     }
+                    .listRowInsets(.init())
+                    .frame(height: 50)
+                    .background(Color(colorScheme == .dark ? UIColor.systemBackground : UIColor.secondarySystemBackground))
+                        
                 }
-                .listRowInsets(.init())
-                .frame(height: 50)
-                .background(Color.red)
-                .cornerRadius(5)
+                
+                Section{
+                    ForEach(listViewModel.categories){ category in
+                        Text(category.title)
+                            .padding()
+                    }
+                    .onDelete(perform: listViewModel.deleteCategory)
+                }
+                
             }
         }
-        .navigationTitle("Settings")
+        .navigationTitle(selection ? "Deleting categories" : "Settings")
+        .toolbar(content: {
+            ToolbarItem(placement: .navigationBarLeading){
+                
+                Button(action: {
+                    if !selection {
+                        self.settings.toggle()
+                    }
+                    else {
+                        self.selection.toggle()
+                    }
+                    
+                }, label: {
+                    Text(selection ? "Back" : "Close")
+                })
+                    
+                
+            }
+        })
     }
     
     func logOut() {
-//        ListView.init(settings: nil)
         listViewModel.deleteAll()
         UserDefaults.standard.set(false, forKey: "status")
         NotificationCenter.default.post(name: NSNotification.Name("statusChange"), object: nil)
@@ -57,13 +102,8 @@ struct SettingsView: View {
         } catch let signOutError as NSError {
             print ("Error signing out: %@", signOutError)
         }
+        self.settings.toggle()
     }
 }
 
 
-
-struct SettingsView_Previews: PreviewProvider {
-    static var previews: some View {
-        SettingsView()
-    }
-}

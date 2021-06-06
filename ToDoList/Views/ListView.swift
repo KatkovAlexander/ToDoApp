@@ -11,7 +11,7 @@ struct ListView: View {
     
     @EnvironmentObject var listViewModel: ListViewModel
     @State var selection: Int? = nil
-    @State var settings: Int? = nil
+    @State var settings = false
     
     var categories : [String] = ["All"]
     @State private var selectedCategory = 0
@@ -49,8 +49,11 @@ struct ListView: View {
                         .onDelete(perform: listViewModel.deleteItem)
                         .onMove(perform: listViewModel.moveItem)
                     }
-                }
-                
+                }.sheet(isPresented: $settings){
+                        NavigationView{
+                            SettingsView(settings: self.$settings)
+                        }
+                    }
                 
                 VStack{
                     Spacer()
@@ -95,19 +98,15 @@ struct ListView: View {
         )
         .toolbar(content: {
             ToolbarItem(placement: .navigationBarTrailing){
-                NavigationLink(
-                    destination: SettingsView(),
-                    tag: 1,
-                    selection: $settings)
-                {
-                    Button(action: {
-                        self.settings = 1
-                        
-                    }, label: {
-                        Image(systemName: "gearshape.2.fill")
-                    })
+                
+                Button(action: {
+                    self.settings.toggle()
                     
-                }
+                }, label: {
+                    Image(systemName: "gearshape.2.fill")
+                })
+                    
+                
             }
         })
     
