@@ -127,12 +127,10 @@ class ListViewModel : ObservableObject {
     
     func deleteCategory(indexSet: IndexSet) {
         
-        print("было в массиве", categories.count)
         let item = indexSet.map{self.categories[$0].id}
         database.child("\(String(describing: user))").child("categories").child(item[0]).removeValue()
         
         categories.remove(atOffsets: indexSet)
-        print("стало в массиве", categories.count)
     }
     
     func deleteItem(indexSet: IndexSet) {
@@ -218,12 +216,6 @@ class ListViewModel : ObservableObject {
         if let encodededData = try? JSONEncoder().encode(categories) {
             UserDefaults.standard.set(encodededData, forKey: categoriesKey)
         }
-        guard
-            let data = UserDefaults.standard.data(forKey: categoriesKey),
-            let savedCategories = try? JSONDecoder().decode([CategoryModel].self, from: data)
-        else { return }
-        
-        print("стало в локальной бд", savedCategories.count)
         
         addCategoriesToDb()
     }

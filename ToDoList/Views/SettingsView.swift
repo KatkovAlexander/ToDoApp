@@ -15,6 +15,7 @@ struct SettingsView: View {
     
     @Environment(\.colorScheme) var colorScheme
     
+    @Binding var selectedCategory : Int
     @Binding var settings : Bool
     @State var selection: Bool = false
     
@@ -67,7 +68,7 @@ struct SettingsView: View {
                         Text(category.title)
                             .padding()
                     }
-                    .onDelete(perform: listViewModel.deleteCategory)
+                    .onDelete(perform: deletingCategory)
                 }
                 
             }
@@ -103,6 +104,11 @@ struct SettingsView: View {
             print ("Error signing out: %@", signOutError)
         }
         self.settings.toggle()
+    }
+    
+    func deletingCategory(at offsets: IndexSet) {
+        listViewModel.deleteCategory(indexSet: offsets)
+        selectedCategory = 0
     }
 }
 

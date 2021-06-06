@@ -14,7 +14,7 @@ struct ListView: View {
     @State var settings = false
     
     var categories : [String] = ["All"]
-    @State private var selectedCategory = 0
+    @State var selectedCategory = 0
     
     var body: some View {
 
@@ -51,7 +51,7 @@ struct ListView: View {
                     }
                 }.sheet(isPresented: $settings){
                         NavigationView{
-                            SettingsView(settings: self.$settings)
+                            SettingsView(selectedCategory: self.$selectedCategory, settings: self.$settings)
                         }
                     }
                 
