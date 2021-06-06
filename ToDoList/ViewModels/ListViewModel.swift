@@ -7,7 +7,7 @@ class ListViewModel : ObservableObject {
     
     private let database = Database.database(url: "https://taskmanagerfefu-default-rtdb.asia-southeast1.firebasedatabase.app").reference()
     
-    private let user = Auth.auth().currentUser?.uid
+    private var user = Auth.auth().currentUser?.uid
     
     @Published var items : [ItemModel] = [] {
         didSet {
@@ -228,5 +228,9 @@ class ListViewModel : ObservableObject {
             }
         }
         
+    }
+    
+    func updateUser() {
+        user = Auth.auth().currentUser?.uid
     }
 }

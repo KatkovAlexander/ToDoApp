@@ -10,6 +10,7 @@ import Firebase
 import FirebaseAuth
 
 struct SignUpView: View {
+    @EnvironmentObject var listViewModel: ListViewModel
     
     @State var user = ""
     @State var pass = ""
@@ -70,6 +71,7 @@ struct SignUpView: View {
                         self.show.toggle()
                         
                         NotificationCenter.default.post(name: NSNotification.Name("statusChange"), object: nil)
+                        listViewModel.updateUser()
                     }
                 }
                 

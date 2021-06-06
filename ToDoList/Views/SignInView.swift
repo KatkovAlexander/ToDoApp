@@ -67,6 +67,7 @@ struct SignInView: View {
                     }
                     listViewModel.getItemsFromDb()
                     listViewModel.getCategoriesFromDb()
+                    listViewModel.updateUser()
                 }) {
                     
                     Text("Sign In").foregroundColor(.white).frame(width: UIScreen.main.bounds.width - 120).padding()
