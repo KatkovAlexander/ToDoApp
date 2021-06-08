@@ -37,7 +37,7 @@ struct ListView: View {
                     
                     Section{
                         ForEach(listViewModel.items) { item in
-                            if cheackItem(item: item){
+                            if checkItem(item: item){
                                 NavigationLink(
                                     destination: OpenView(item: item),
                                     label: {
@@ -117,7 +117,7 @@ struct ListView: View {
         return ["All"] + listViewModel.allCategories() + ["Complited"]
     }
     
-    func cheackItem(item: ItemModel) -> Bool {
+    func checkItem(item: ItemModel) -> Bool {
         
         if makingCategories()[selectedCategory] == "All" && item.isComplited == false {
             return true

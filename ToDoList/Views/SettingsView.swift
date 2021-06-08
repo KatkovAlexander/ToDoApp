@@ -51,18 +51,7 @@ struct SettingsView: View {
                     .cornerRadius(5)
                 }
             }
-            else {
-                Section{
-                    HStack{
-                        Text("Swipe left to delete")
-                        Spacer()
-                    }
-                    .listRowInsets(.init())
-                    .frame(height: 50)
-                    .background(Color(colorScheme == .dark ? UIColor.systemBackground : UIColor.secondarySystemBackground))
-                        
-                }
-                
+            else {                
                 Section{
                     ForEach(listViewModel.categories){ category in
                         Text(category.title)
@@ -73,7 +62,7 @@ struct SettingsView: View {
                 
             }
         }
-        .navigationTitle(selection ? "Deleting categories" : "Settings")
+        .navigationTitle(selection ? "Swipe left to delete" : "Settings")
         .toolbar(content: {
             ToolbarItem(placement: .navigationBarLeading){
                 
