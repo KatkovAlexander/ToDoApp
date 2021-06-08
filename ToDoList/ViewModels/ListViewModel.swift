@@ -35,7 +35,7 @@ class ListViewModel : ObservableObject {
         
         updateUser()
         
-        database.child("\(String(describing: user))").child("items").observeSingleEvent(of: .value, with: { snapshot in
+        database.child(user ?? "").child("items").observeSingleEvent(of: .value, with: { snapshot in
             guard
                 let db = snapshot.value as? [String: Any]
             
@@ -94,7 +94,7 @@ class ListViewModel : ObservableObject {
         
         updateUser()
         
-        database.child("\(String(describing: user))").child("categories").observeSingleEvent(of: .value, with: { snapshot in
+        database.child(user ?? "").child("categories").observeSingleEvent(of: .value, with: { snapshot in
             guard
                 let db = snapshot.value as? [String: Any]
             
@@ -128,7 +128,7 @@ class ListViewModel : ObservableObject {
     func deleteCategory(indexSet: IndexSet) {
         
         let item = indexSet.map{self.categories[$0].id}
-        database.child("\(String(describing: user))").child("categories").child(item[0]).removeValue()
+        database.child(user ?? "").child("categories").child(item[0]).removeValue()
         
         categories.remove(atOffsets: indexSet)
     }
@@ -136,7 +136,7 @@ class ListViewModel : ObservableObject {
     func deleteItem(indexSet: IndexSet) {
         
         let item = indexSet.map{self.items[$0].id}
-        database.child("\(String(describing: user))").child("items").child(item[0]).removeValue()
+        database.child(user ?? "").child("items").child(item[0]).removeValue()
         
         items.remove(atOffsets: indexSet)
     }
@@ -144,7 +144,7 @@ class ListViewModel : ObservableObject {
     func deleteItem(item: ItemModel){
     
         if let index = items.firstIndex (where: {$0.id == item.id}) {
-            database.child("\(String(describing: user))").child("items").child(item.id).removeValue()
+            database.child(user ?? "").child("items").child(item.id).removeValue()
             items.remove(at: index)
         }
     }
@@ -186,7 +186,7 @@ class ListViewModel : ObservableObject {
                     "isComplited" : item.isComplited,
                     "category" : item.category
                 ]
-                database.child("\(String(describing: user))").child("items").child(item.id).setValue(object)
+                database.child(user ?? "").child("items").child(item.id).setValue(object)
             }
         }
     }
@@ -206,7 +206,7 @@ class ListViewModel : ObservableObject {
                 let object : [String: Any] = [
                     "title" : category.title
                 ]
-                database.child("\(String(describing: user))").child("categories").child(category.id).setValue(object)
+                database.child(user ?? "").child("categories").child(category.id).setValue(object)
             }
             
         }
